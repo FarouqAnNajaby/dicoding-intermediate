@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">Intermediate</string>
+    <string name="login">Masuk</string>
+    <string name="submit">Kirim</string>
+    <string name="email">Email</string>
+    <string name="hint_email">Masukkan email anda..</string>
+    <string name="password">Sandi</string>
+    <string name="hint_pass">Masukkan Sandi anda..</string>
+    <string name="register">Register</string>
+    <string name="name">Nama</string>
+    <string name="hint_name">Masukan nama anda..</string>
+    <string name="create_account">Buat akun</string>
+    <string name="have_account">Sudah punya akun?</string>
+    <string name="add_photo">+ Tambah foto</string>
+    <string name="remove_photo">- Hapus foto</string>
+    <string name="logout">Keluar</string>
+    <string name="password_new">Password Baru</string>
+    <string name="text_no_account">Belum punya akun?</string>
+    <string name="error_empty_password">Password harus diisi</string>
+    <string name="error_password_more_6">Password harus lebih dari 6 karakter</string>
+
+</resources>
