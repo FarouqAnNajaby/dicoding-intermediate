@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.view.View
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import com.example.intermediate.R
 import com.example.intermediate.databinding.ActivityMainBinding
@@ -24,6 +25,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var binding : ActivityMainBinding
+    private val viewModel: loginViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,6 +35,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.ivPassword.setOnClickListener(this)
         binding.btnDaftar.setOnClickListener(this)
         binding.btnLogin.setOnClickListener(this)
+
+        viewModel.login("admin","admin123").observe(this){
+            if (it != null){
+                
+            }
+        }
 
     }
 
