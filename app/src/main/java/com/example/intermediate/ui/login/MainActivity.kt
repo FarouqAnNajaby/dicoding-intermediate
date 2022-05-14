@@ -8,9 +8,13 @@ import android.text.method.PasswordTransformationMethod
 import android.view.View
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.example.intermediate.R
 import com.example.intermediate.databinding.ActivityMainBinding
+import com.example.intermediate.ui.ViewModelFactory
 import com.example.intermediate.ui.register.RegisterActivity
+import com.example.intermediate.ui.register.RegisterViewModel
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -25,7 +29,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var binding : ActivityMainBinding
-    private val viewModel: loginViewModel by viewModels()
+
+    private lateinit var viewModel: LoginViewModel
+
+//    private val viewModel: LoginViewModel by viewModels()
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,12 +44,18 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.btnDaftar.setOnClickListener(this)
         binding.btnLogin.setOnClickListener(this)
 
-        viewModel.login("admin","admin123").observe(this){
-            if (it != null){
-                
-            }
-        }
+        val factory: ViewModelFactory = ViewModelFactory.getInstance(applicationContext)
+        viewModel = ViewModelProvider(this, factory).get(LoginViewModel::class.java)
+//        val viewModel: LoginViewModel by viewModels {
+//            factory
+//        }
 
+//        viewModel.login("admin","admin123").observe(this){
+//            if (it != null){
+//
+//            }
+//        }
+//        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
     }
 
     private fun switchPassword() {
@@ -74,6 +88,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 binding.etEmail.error = FIELD_IS_NOT_VALID
                 return
             }
+
+//            viewModel.login()
 
         }else if (view.id == R.id.btnDaftar){
             val mIntent = Intent(this@MainActivity, RegisterActivity::class.java)

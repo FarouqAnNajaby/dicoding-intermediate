@@ -2,20 +2,18 @@ package com.example.intermediate.data.repository
 
 import android.app.Application
 import android.content.ContentValues.TAG
-import android.content.Intent
 import android.util.Log
-import androidx.core.content.ContextCompat.startActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.example.intermediate.api.ApiConfig
+import com.example.intermediate.api.ApiInterface
 import com.example.intermediate.data.model.ResponseDefault
 import com.example.intermediate.data.model.ResponseLogin
-import com.example.intermediate.ui.login.MainActivity
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class UserRepository (application: Application){
+class UserRepository(apiInterface: ApiInterface){
 
     private val _isLoading = MutableLiveData<Boolean>()
     val isLoading: LiveData<Boolean> = _isLoading
@@ -53,6 +51,7 @@ class UserRepository (application: Application){
             override fun onResponse(call: Call<ResponseDefault>,
                 response: Response<ResponseDefault>) {
                 if (response.isSuccessful) {
+                    Log.i("cekRegister", "onResponse: "+response.message())
                     response.body()?.let {
 
                     }
@@ -64,5 +63,16 @@ class UserRepository (application: Application){
             }
         })
         return registerResult
+    }
+
+    companion object {
+        @Volatile
+        private var instance: UserRepository? = null
+        fun getInstance(
+            apiService: ApiInterface
+        ): UserRepository =
+            instance ?: synchronized(this) {
+                instance ?: UserRepository(apiService)
+            }.also { instance = it }
     }
 }

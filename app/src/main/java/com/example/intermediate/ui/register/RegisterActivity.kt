@@ -5,16 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
 import androidx.activity.viewModels
 import com.example.intermediate.R
 import com.example.intermediate.data.model.UserModel
 import com.example.intermediate.databinding.ActivityRegisterBinding
 import com.example.intermediate.ui.login.MainActivity
-import com.shashank.sony.fancytoastlib.FancyToast
-import dagger.hilt.android.AndroidEntryPoint
 
-@AndroidEntryPoint
 class RegisterActivity : AppCompatActivity(),  View.OnClickListener {
 
     companion object{
@@ -72,8 +70,7 @@ class RegisterActivity : AppCompatActivity(),  View.OnClickListener {
                 return
             }
 
-            val data = UserModel(nama,email,password)
-            registUser(data)
+            register(email,password,nama)
 
         }else if (view.id == R.id.btnLogin){
             val mIntent = Intent(this@RegisterActivity, MainActivity::class.java)
@@ -81,38 +78,16 @@ class RegisterActivity : AppCompatActivity(),  View.OnClickListener {
         }
     }
 
-    private fun isValidEmail(email: CharSequence): Boolean {
-        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
-    }
-
-    private fun registUser(user: UserModel){
-        registerViewModel.registerUser(user).observe(this){
-            when(it){
-                is ApiResponse.Loading ->{
-                    binding.progresbar.visibility = View.VISIBLE
-                }
-                is ApiResponse.Success ->{
-                    try {
-                        binding.progresbar.visibility = View.GONE
-                    }finally {
-                        MainActivity.start(this)
-                        finish()
-                        FancyToast.makeText(this, "Register Success",
-                            FancyToast.LENGTH_LONG, FancyToast.SUCCESS, 0, false);
-                    }
-                }
-                is ApiResponse.Error ->{
-                    binding.progresbar.visibility = View.GONE
-                    FancyToast.makeText(this, "Register Failed",
-                        FancyToast.LENGTH_LONG, FancyToast.ERROR, 0, false);
-                }
-                else -> {
-                    FancyToast.makeText(this, "Network error",
-                        FancyToast.LENGTH_LONG, FancyToast.CONFUSING, 0, false);
-                }
+    private fun register(email: String, password: String, nama: String) {
+        registerViewModel.register(email,password,nama).observe(this){
+            if(it != null){
+                Log.i("cekRegister", "register berhasil")
             }
         }
     }
 
+    private fun isValidEmail(email: CharSequence): Boolean {
+        return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
 
 }
