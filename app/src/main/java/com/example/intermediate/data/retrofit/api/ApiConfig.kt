@@ -1,4 +1,4 @@
-package com.example.intermediate.api
+package com.example.intermediate.data.retrofit.api
 
 import com.example.intermediate.utils.Const
 import okhttp3.OkHttpClient

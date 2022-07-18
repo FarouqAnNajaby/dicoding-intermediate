@@ -7,10 +7,13 @@ import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
 import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.viewModels
+import androidx.lifecycle.ViewModelProvider
 import com.example.intermediate.R
-import com.example.intermediate.data.model.UserModel
 import com.example.intermediate.databinding.ActivityRegisterBinding
+import com.example.intermediate.ui.ViewModelFactory
+import com.example.intermediate.ui.login.LoginViewModel
 import com.example.intermediate.ui.login.MainActivity
 
 class RegisterActivity : AppCompatActivity(),  View.OnClickListener {
@@ -20,7 +23,7 @@ class RegisterActivity : AppCompatActivity(),  View.OnClickListener {
         const val FIELD_IS_NOT_VALID = "Email tidak valid"
     }
 
-    private val registerViewModel: RegisterViewModel by viewModels()
+    private lateinit var viewModel: RegisterViewModel
     private lateinit var binding : ActivityRegisterBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -31,6 +34,9 @@ class RegisterActivity : AppCompatActivity(),  View.OnClickListener {
         binding.ivPassword.setOnClickListener(this)
         binding.btnDaftar.setOnClickListener(this)
         binding.btnLogin.setOnClickListener(this)
+
+        val factory: ViewModelFactory = ViewModelFactory.getInstance(applicationContext)
+        viewModel = ViewModelProvider(this, factory).get(RegisterViewModel::class.java)
     }
 
     private fun switchPassword() {
@@ -79,9 +85,11 @@ class RegisterActivity : AppCompatActivity(),  View.OnClickListener {
     }
 
     private fun register(email: String, password: String, nama: String) {
-        registerViewModel.register(email,password,nama).observe(this){
+        viewModel.register(email,password,nama).observe(this){
             if(it != null){
-                Log.i("cekRegister", "register berhasil")
+                Toast.makeText(this, "berhasil", Toast.LENGTH_SHORT).show()
+                val mIntent = Intent(this, MainActivity::class.java)
+                startActivity(mIntent)
             }
         }
     }

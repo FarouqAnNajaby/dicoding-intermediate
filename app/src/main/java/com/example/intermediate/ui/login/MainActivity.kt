@@ -5,15 +5,19 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.method.HideReturnsTransformationMethod
 import android.text.method.PasswordTransformationMethod
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.example.intermediate.R
+import com.example.intermediate.data.local.DbHelper
 import com.example.intermediate.databinding.ActivityMainBinding
 import com.example.intermediate.ui.ViewModelFactory
 import com.example.intermediate.ui.register.RegisterActivity
 import com.example.intermediate.ui.register.RegisterViewModel
+import com.example.intermediate.utils.Const
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -28,11 +32,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     private lateinit var binding : ActivityMainBinding
-
     private lateinit var viewModel: LoginViewModel
-
-//    private val viewModel: LoginViewModel by viewModels()
-
+    private lateinit var prefHelper: DbHelper
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -42,19 +43,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         binding.ivPassword.setOnClickListener(this)
         binding.btnDaftar.setOnClickListener(this)
         binding.btnLogin.setOnClickListener(this)
+        prefHelper = DbHelper(this)
 
         val factory: ViewModelFactory = ViewModelFactory.getInstance(applicationContext)
-        viewModel = ViewModelProvider(this, factory).get(LoginViewModel::class.java)
-//        val viewModel: LoginViewModel by viewModels {
-//            factory
-//        }
-
-//        viewModel.login("admin","admin123").observe(this){
-//            if (it != null){
-//
-//            }
-//        }
-//        viewModel = ViewModelProvider(this)[LoginViewModel::class.java]
+        viewModel = ViewModelProvider(this, factory)[LoginViewModel::class.java]
     }
 
     private fun switchPassword() {
@@ -87,8 +79,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 binding.etEmail.error = FIELD_IS_NOT_VALID
                 return
             }
-
-//            viewModel.login()
+            login(email,password)
 
         }else if (view.id == R.id.btnDaftar){
             val mIntent = Intent(this@MainActivity, RegisterActivity::class.java)
@@ -96,8 +87,33 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         }
     }
 
+    private fun login(email: String, password: String) {
+        viewModel.login(email,password).observe(this){
+            if(!it.error){
+                Toast.makeText(this, "Login Sukses", Toast.LENGTH_SHORT).show()
+            }
+            else{
+                Toast.makeText(this, "Login Gagal", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     private fun isValidEmail(email: CharSequence): Boolean {
         return android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()
+    }
+
+    private fun saveUserData(
+        token: String,
+        id: String,
+        userData: String
+    ) {
+        prefHelper.put(Const.PREF_TOKEN, token)
+        prefHelper.put(Const.PREF_ID, id)
+        prefHelper.put(Const.PREF_USER, userData)
+    }
+
+    private fun saveSession() {
+        prefHelper.put(Const.PREF_IS_FIRST, true)
     }
 
 }

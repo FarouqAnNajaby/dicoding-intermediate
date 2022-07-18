@@ -1,14 +1,13 @@
 package com.example.intermediate.data.repository
 
-import android.app.Application
 import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.example.intermediate.api.ApiConfig
-import com.example.intermediate.api.ApiInterface
-import com.example.intermediate.data.model.ResponseDefault
-import com.example.intermediate.data.model.ResponseLogin
+import com.example.intermediate.data.retrofit.api.ApiConfig
+import com.example.intermediate.data.retrofit.api.ApiInterface
+import com.example.intermediate.data.retrofit.model.ResponseDefault
+import com.example.intermediate.data.retrofit.model.ResponseLogin
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -64,7 +63,6 @@ class UserRepository(apiInterface: ApiInterface){
         })
         return registerResult
     }
-
     companion object {
         @Volatile
         private var instance: UserRepository? = null

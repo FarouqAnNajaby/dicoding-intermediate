@@ -18,5 +18,11 @@
     <string name="text_no_account">Belum punya akun?</string>
     <string name="error_empty_password">Password harus diisi</string>
     <string name="error_password_more_6">Password harus lebih dari 6 karakter</string>
+    <string name="not_found">Tidak ada data</string>
+    <string name="upload">Unggah</string>
+    <string name="description">Masukkan deskripsi</string>
+    <string name="camera_x">Kamera</string>
+    <string name="gallery">Galeri</string>
+    <string name="choose_image">Pilih Gambar</string>
 
 </resources>
